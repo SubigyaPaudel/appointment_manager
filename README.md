@@ -7,3 +7,5 @@ Some technical details of this application are as follows:
 1. Database: Sqlite3
 2. Backend : Django/Python3
 3. Frontend : React/JavaScript
+
+Please feel free to contact me at spaudel.dev@gmail.com in the case that you find some bugs in the program. Suggestions are also welcome.
