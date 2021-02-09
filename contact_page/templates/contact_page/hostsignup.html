@@ -1,0 +1,31 @@
+{% extends 'contact_page/layout_normal.html' %}
+
+{% block rest %}
+{% if message %}
+    <h1 style = "color: red;">{{message}}</h1>
+{% endif %}
+<form class = 'center form' action="{%url 'contact_page:signup'%}" method = 'POST'>
+    {% csrf_token %}
+    <h2>Sign-in details and Personal information</h2>
+    {% for fields in authform %}
+        {{fields.label}}
+        {{fields}}
+        <br/>
+    {% endfor %}
+    {% for field in userdataform%}
+        {{field.label}}
+        {{field}}
+        <br/>
+    {% endfor %}
+    <h2>Address Information</h2>
+    {% for fields in addressform %}
+        {{fields.label}}
+        {{fields}}
+        <br/>
+    {% endfor %}
+    {{authform.errors}}
+    {{newhostform.errors}}
+    {{addressform.errors}}
+    <input type="submit" name = 'Sign Up'>
+</form>
+{% endblock rest %}

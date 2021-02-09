@@ -1,0 +1,132 @@
+{% extends 'contact_page/layout_logged_in.html' %}
+{% block rest %}
+<div id = 'meetings'>
+</div>
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<script type = 'text/babel'>
+    class Individualmeeting extends React.Component{
+        constructor(props){
+            super(props);
+            this.state = {};
+            this.state['errors'] = null;
+            this.state['meeting_confirmed'] = false;
+            this.visitor_name = props.details.visitor.first_name + " " + props.details.visitor.last_name;
+            this.visitor_phone_numer = props.details.visitor.phone_number;
+            this.visitor_email = props.details.visitor.email;
+            this.date = props.details.meeting_date;
+            this.start = props.details.meeting_begin;
+            this.end = props.details.meeting_end;
+            this.location = props.details.location;
+            this.purpose = props.details.purpose;
+            this.confirmation_link = props.details.confirmation_link;
+            this.key = props.details.visitor.first_name + props.details.visitor.last_name + Math.floor(Math.random() * Math.floor(10000));
+        }
+        render(){
+            if(this.state.meeting_confirmed){
+                return(
+                    <h2 className = 'meetings_host_view' className = 'confirmation bolden' id = {this.key}>
+                        Meeting with {this.visitor_name} has been confirmed
+                    </h2>
+                )
+            }else{
+                return (
+                    <div key = {this.key} id = {this.key} className = 'meetings_host_view'>
+                        <h2 key = {this.key + 'visitor_name'} className = 'bolden center'>Name: {this.visitor_name} </h2>
+                        <h3 key = {this.key + 'visitor_email'} className = 'bolden center'>{this.visitor_email}</h3>
+                        <h3 key = {this.key + 'visitor_phone'} className = 'bolden center'>{this.visitor_phone_number}</h3>
+                        <div key = {this.key + 'purpose'} className = 'purpose_area'>
+                            <h3 className = 'stick_to_left' key = {this.key + 'purpose_area_title'} >
+                                Purpose
+                            </h3>
+                            <p className = 'bolden' key = {this.key + 'purpose_description'}>
+                                {this.purpose}    
+                            </p>
+                        </div>
+                        <div key = {this.key + 'div1'} className = 'stick_to_left'>
+                            <h2 key = {this.key + 'firsth2'} className = 'stick_to_left'>Meeting details</h2>
+                            <p key = {this.key + 'firstp'}>Date :{this.date}</p>
+                            <p key = {this.key + 'secondp'}>Time : {this.start} to {this.end}</p>
+                            <div key  = {this.key + 'div2'}>Location :{this.location}</div>
+                        </div>
+                        <div className = 'meetings_button_area'>
+                            <button key = {this.key + 'confirmation_button'} onClick = {this.confirm} className = 'highlight'>
+                                Confirm
+                            </button>
+                        </div>
+                        <span className = 'errors' id = {this.key + 'errors'} key = {this.key + 'errors'}>{this.state.errors ? this.state.errors : ""}</span>
+                    </div>
+                )
+            }
+        }
+        confirm = (event) => {
+            var promise_object = fetch(this.confirmation_link);
+            promise_object.then((response) => {
+                response.text().then((response) => {
+                    console.log(response)
+                    if(response === 'confirmed'){
+                        this.setState((state) => ({
+                            meeting_confirmed:true
+                        }));
+                        Meetings.reduce();
+                    }else{
+                        this.setState((state) => ({
+                            errors: "Couldn't confirm the meeting at this moment in time, please try again later"
+                        }));
+                    }
+                });
+            });
+            promise_object.catch(() => {
+                this.setState((state) => ({
+                    errors: "Couldn't confirm the meeting at this moment in time, please try again later"
+                }));
+            });
+        }
+    }
+    class Meetings extends React.Component{
+        static count = 0;
+        constructor(props){
+            super(props);
+            this.elements = [];
+            this.state = {};
+            for(var index in props.elements){
+                this.elements.push(props.elements[index]);
+                Meetings.count++;
+            }
+            console.log(this.state.count);
+        }
+        static reduce(){
+            console.log('meetings being removed');
+            if(--Meetings.count === 0){
+                var new_title = document.querySelector('#title');
+                new_title.style.color = 'blue';
+                new_title.innerHTML = 'No new meetings or no action needed for the old ones';
+            }
+        }
+        render(){
+            if(Meetings.count === 0){
+                return (
+                    <div key = 'main_encapsulation' id = 'main_encapsulation'>
+                        <h1 id = 'title' key = 'title' className = 'confirmation stick_to_left'> No ignored meetings</h1>
+                    </div>
+                )
+            }else{
+                return (
+                <div key = 'main_encapsulation' id = 'main_encapsulation'>
+                    <h1 id = 'title' key = 'title' className = 'errors stick_to_left'> Ignored meetings </h1>
+                        {this.elements.map(element => <Individualmeeting details = {element}/>)}
+                </div>
+                );
+            }
+        }
+    }
+    var jsonmeetings = JSON.parse('{{meetings|escapejs}}');
+    var meetings = [];
+    for(var index in jsonmeetings){
+        meetings.push(jsonmeetings[index]);
+    }
+    ReactDOM.render(<Meetings elements = {meetings}/>, document.querySelector('#meetings'));
+</script>
+{% endblock rest %}
+

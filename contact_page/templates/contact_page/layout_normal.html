@@ -1,0 +1,25 @@
+{%load static%}
+
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <title>
+            Contact_manager
+        </title>
+        <link rel="stylesheet" href="{%static 'contact_page/css/style.css'%}">
+        <script src = "{%static '/contact_page/scripts/autocomplete.js'%}">
+        </script>
+        
+    </head>
+    <body>
+       <div id="top_banner">
+                <a href="{%url 'contact_page:welcome'%}">
+                    <h1 id = 'title'>Appointment manager</h1>
+                </a>
+       </div>
+        <div id= 'things'>
+            {%block rest%}
+            {%endblock%}
+        </div>
+    </body>     
+</html>

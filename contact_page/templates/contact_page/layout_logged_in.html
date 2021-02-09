@@ -1,0 +1,53 @@
+{%load static%}
+
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <title>
+            Contact_manager
+        </title>
+        <link rel="stylesheet" href="{%static 'contact_page/css/style_logged_in.css'%}">
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                document.querySelector('body').width = window.innerWidth;
+                document.querySelector('body').height = window.innerHeight;
+                console.log('firing');
+            })
+        </script>
+    </head>
+    <body>
+       <div id="top_banner">
+            <a href="{%url 'contact_page:inside'%}">
+                <h1 style="color:white;">Appointment manager</h1>
+            </a>
+            <div id = 'button_area'>
+                <a href="{% url 'contact_page:logout' %}">
+                  <button>
+                    Logout
+                  </button>
+                </a>
+            </div>
+       </div>
+       <div id="side_bar" class = 'highlight'>
+        <div class = 'highlight' id = 'get_fixed_meetings'>
+            <a href="{% url 'contact_page:get_fixed_meetings'%}">Confirmed Appointments</a>
+        </div>
+        <br/>
+        <div class = 'highlight'>
+            <a href="{%url 'contact_page:personal_data'%}">Personal Data</a>
+        </div>
+        <br/>
+        <div class = 'highlight' id = 'ignored_appointments'>
+            <a href="{% url 'contact_page:get_ignored_meetings'%}">Ignored Appintments</a>
+        </div>
+        <br/>
+        <div class = 'highlight' id = 'change_password'>
+            <a href="{% url 'contact_page:change_password'%}">Change Password</a>
+        </div>
+       </div>
+        <div id= 'working_area'>
+            {%block rest%}
+            {%endblock%}
+        </div>
+    </body>     
+</html>

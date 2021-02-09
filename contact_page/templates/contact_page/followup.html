@@ -1,0 +1,126 @@
+{% extends 'contact_page/layout_normal.html'%}
+
+{% block rest %}
+{% if message %}
+    <h1 style = 'color:red;'>{{message}}</h1>
+{% endif %}
+<div id = 'individual_box'>
+{% if form %}
+    <form action = "{% url 'contact_page:followup'%}" method = 'POST' class = 'center form'>
+        {% csrf_token %}
+        {%for field in form%}
+            {{field.label}}
+            {{field}}
+            <br/>
+        {% endfor %}
+        <input type='submit'>
+    </form>
+{% else %}
+    <form action = "{% url 'contact_page:update'%}" method = 'POST' class = 'center' id = 'main_form'>
+        {% csrf_token %}
+        <div id = 'pseudoform'>
+        </div>
+    </form>
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script type = 'text/babel'>
+        
+class Modisplay extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {};
+        this.state['inputs'] = false;
+        this.state['fixed_elements'] = []
+        this.state['input_elements'] = []
+        this.state['hidden_elements'] = []
+        this.state['determining_elements'] = []
+        this.state['two_options'] = true;
+        for (var keys in props.elements) {
+            const element = props.elements[keys];
+            if (element.category === 'fixed') {
+                this.state.fixed_elements.push(element);
+            } else if (element.category === 'input') {
+                this.state.input_elements.push(element);
+            } else if (element.category === 'hidden') {
+                this.state.hidden_elements.push(element);
+            } else {
+                if (element.category === 'determining') {
+                    this.state.determining_elements.push(element);
+                    if (element.placeholder=== true){
+                        this.state.two_options = false;
+                    }
+                }
+            }
+        }
+    }
+    render() {
+            return (
+                <div key = 'encapsulation'>
+                    {this.state.hidden_elements.map((element) => this.load_hidden_elements(element))}
+                    <table key='tablekey'>
+                    <thead key='tablehead'>
+                        <tr key='first_row'>
+                        {this.state.fixed_elements.map(element => this.display_label(element))}
+                        {this.state.input_elements.map(element => this.display_label(element))}
+                        {this.state.determining_elements.map(element => this.display_label(element))}
+                        </tr>
+                    </thead>
+                    <tbody key='table_body'>
+                        <tr key='second_row'>
+                        {this.state.fixed_elements.map(element => this.load_fixed_elements(element))}
+                        {this.state.input_elements.map(element => this.load_inputs(element))}
+                        {this.state.determining_elements.map(element => <td key={element.label + 'row2'}> {element.placeholder ? 'Fixed' : 'Not Fixed'} </td>)}
+                        </tr>
+                    </tbody>
+                    </table>
+                    <button type = 'button' onClick = {this.edit}>Edit meeting details</button>
+                </div>
+            );
+    }
+    display_label(element){
+        return <td key = {element.label + 'row'}>{element.label}</td>
+    }
+    load_fixed_elements(element){
+        return <td key = {element.label + 'row2'}> {element.value} </td>
+    }
+    load_inputs(element){
+        if(this.state.inputs){
+            return <td key = {element.label + '_row2'}> <input name = {element.name} key = {element.label + '_row2_input'}  placeholder ={element.placeholder} type = {element.type} defaultValue = {element.placeholder}/></td>
+        }else{
+            return <td key = {element.label + '_row2'}> {element.placeholder} </td>
+        }
+    }
+    load_hidden_elements(element){
+        return <input key = {'hidden' + element.name} name = {element.name} type = 'hidden' value={element.value}/>
+    }
+    edit = (event) => {   
+        if(this.state.two_options){
+            this.setState((state) => ({
+                inputs: true
+            }));
+            event.target.remove();
+            var submit_button = document.createElement('Input');
+            submit_button.type = 'submit';
+            document.querySelector('#main_form').appendChild(submit_button);
+        }else{
+            if(!this.state.activated){
+                var error = document.createElement('h3');
+                error.innerHTML = 'The Host has already confirmed the meeting, further modifications to the meeting at this point in time is not possible.';
+                error.style.position = 'relative';
+                error.style.left = '0%';
+                error.style.color = 'green';
+                document.querySelector('#main_form').appendChild(error);
+                this.setState((state) => ({
+                    'activated':true
+                }));
+            }
+        }
+    } 
+    }
+    const data = JSON.parse("{{meeting|escapejs}}");
+    console.log("data = " + data);
+    ReactDOM.render(<Modisplay elements = {data}/>, document.querySelector('#pseudoform'))
+    </script>
+{% endif %}
+{% endblock  %} 

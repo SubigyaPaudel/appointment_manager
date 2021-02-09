@@ -1,0 +1,35 @@
+{% extends 'contact_page/layout_normal.html'%}
+
+{% block rest %}
+<div id = 'individual_box'>
+    <h1>Schedule an appointment with {{host_first_name}} {{host_last_name}}</h1>
+    {% if message %}
+    <h2 class = 'center' style = 'color:red;'>{{message}}</h2>
+    {% if not visitor_exists %}
+        <h2 class = 'center' style = 'color:red;'>{{visitor_form.errors}}</h2>
+    {% endif %}
+        <h2 class = 'center' style = 'color:red;'>{{meeting_form.errors}}</h2>
+    {% else %}
+    <h2>Please fill out the form below</h2>
+    {% endif %}
+    <form action="{% url 'contact_page:schedule'%}" method = 'POST' class = 'center' style = 'font-weight: bold;'>
+        {% csrf_token %}
+        {% for field in visitor_form%}
+            {{field.label}}
+            {{field}}
+            <br/>
+        {% endfor %}
+        {% csrf_token %}
+        {% for field in meeting_form%}
+            {{field.label}}
+            {{field}}
+            <br/>
+        {% endfor %}
+        <input type="hidden" name = 'host_email' value = {{host_email}}>
+        <input type='hidden' name = 'host_first_name' value = {{host_first_name}}>
+        <input type='hidden' name = 'host_last_name' value = {{host_last_name}}>
+        <br/>
+        <input type="submit">
+    </form>
+</div>
+{% endblock %}

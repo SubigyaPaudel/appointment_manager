@@ -1,0 +1,13 @@
+{% extends 'contact_page/layout_normal.html'%}
+
+{% block rest %}
+<div id = 'individual_box'>
+    <h1> {{message}}</h1>
+    {% if meeting_token %}
+        <h2>The token for your meeting is</h2> <h1 style="color:green;">{{meeting_token}}</h1>
+    {% endif %}
+    <a href="{% url 'contact_page:welcome'%}">
+        Back to the main page
+    </a>
+</div>
+{% endblock %}

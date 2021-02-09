@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+      <title>
+          Contact_manager
+      </title>
+      <link rel="stylesheet" href="{% static 'contact_page/css/welcome.css'%}">
+      <script></script>
+  </head>
+  <body>
+    <div id="top_banner">
+      <a href="{%url 'contact_page:welcome'%}">
+        <h1 id = 'title'>Appointment manager</h1>
+      </a>
+      <div id = 'button_area'>
+        <a href="{%url 'contact_page:search'%}">
+          <button>
+            Search
+          </button>
+        </a>
+        <a href="{%url 'contact_page:hostLogin' 'false' 'inside'%}">
+          <button>
+            Sign-In
+          </button>
+        </a>
+        <a href="{%url 'contact_page:followup'%}" id = 'followup_button'>
+          <button>
+            Followup
+          </button>
+        </a>
+      </div>
+    </div>
+    <div id= 'things'>
+      <h1>
+        Book your appointments online!!    
+      </h1>
+      <h2>
+        If the person you are supposed to meet is listed here, then you can use this website to meet them.
+      </h2>
+      <h2>
+        Click on the search button to find if they use this platform
+      </h2>
+      <h1>
+        Want to use this platform to meet your customers? Sign up <a href="{% url 'contact_page:signup' %}">here</a>
+      </h1>
+    </div>
+  </body>     
+</html>

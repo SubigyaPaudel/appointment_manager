@@ -1,0 +1,121 @@
+{% extends 'contact_page/layout_logged_in.html'%}
+
+{% block rest %}
+{% if success %}
+    <h1 class = 'ignore'>
+        Your data has been successfully modified
+    </h1>
+{% else %}
+<form action="{% url 'contact_page:modify_host_data'%}" method="POST" id = 'host_modification_form'>
+    {% csrf_token %}
+    <div id = 'contents'>
+
+    </div>
+</form>
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<script type = 'text/babel'>
+    class Personal_data_box extends React.Component{
+        constructor(props){
+            super(props);
+            this.state = {
+                input_mode:false,
+            };
+            this.elements = [];
+            for(var element in props.elements){
+                this.elements.push(props.elements[element]);
+            }
+            this.personal_info = [];
+            this.address_info = [];
+            for(var i = 0; i <= 4; i++){
+                this.personal_info.push(this.elements[i]);
+            }
+            for(var i = 5; i <= 9; i++){
+                this.address_info.push(this.elements[i]);
+            }
+        }
+        render() {
+            if(!this.state.input_mode){
+                return (
+                    <div key = 'main_encapsulation' id = 'main_encapsulation'>
+                        <div className = 'personal_info' key = 'personal_info_area'>
+                            <h1 className = 'confirmed'>
+                                Personal information
+                            </h1>
+                            {this.personal_info.map(element => this.display(element))}
+                        </div>
+                        <div className = 'address_info' key = 'address_info_area' key = 'address_info_area'>
+                            <h1 className = 'confirmed'>
+                                Address information
+                            </h1>
+                            {this.address_info.map(element => this.display(element))}
+                        </div>
+                        <button key = 'edit_button' type = 'button' onClick = {this.show_inputs}>Edit Elements</button>
+                    </div>
+                );
+            }else{
+                return (
+                    <div key = 'main_encapsulation' id = 'main_encapusulation'>
+                        <div className = 'personal_info' key = 'personal_info_area'>
+                            {this.personal_info.map(element => this.display_inputs(element))}
+                        </div>
+                        <div className = 'address_info' key = 'address_info_area' key = 'address_info_area'>
+                            {this.address_info.map(element => this.display_inputs(element))}
+                        </div>
+                        <input key = 'submit_button' type="submit"/>
+                    </div>
+                );
+            }
+        }
+        display_inputs(element) {
+            if(element.category == 'changeable'){
+                return (
+                    <div key = {element.label + ' section'}>
+                        <label key = {element.label + 'label'} htmlFor = {element.label}>{element.label}</label>
+                        <input key = {element.label + 'input'} id = {element.name} name = {element.name} type = {element.type} placeholder = {element.placeholder} defaultValue = {element.placeholder} onChange = {this.markChanged}/>
+                    </div>
+                );
+            }
+        }
+
+        display(element) {
+            return (
+                <h2 key = {element.label}>{element.label}: {element.placeholder}</h2>
+            )
+        }
+
+        markChanged = (event) => {
+            var change_marker = document.querySelector(`#${event.target.id}_change_marker`);
+            if(!change_marker){
+                var newelement = document.createElement('p');
+                newelement.innerHTML = 'Element marked for change upon submit';
+                newelement.style.color = 'red';
+                newelement.id = `${event.target.id}_change_marker`;
+                event.target.after(newelement);
+            }
+        }
+
+        show_inputs = () => {
+            this.setState((state) => ({
+                input_mode : true
+            }));
+        }
+    }
+    var data = JSON.parse('{{data|escapejs}}');
+    ReactDOM.render(<Personal_data_box elements = {data}/>, document.querySelector('#contents'));
+    document.querySelector('form').onsubmit = check_blanks;
+    function check_blanks(event) {
+        document.querySelectorAll('label').forEach((element) => {
+            element.remove();
+        });
+        document.querySelectorAll('input').forEach((element) => {
+            if(element.value === "" && element.type !== 'hidden'){
+                element.remove();
+            }
+        })
+        return true;
+    }
+</script>
+{% endif %}
+{% endblock %}

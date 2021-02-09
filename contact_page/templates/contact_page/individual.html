@@ -1,0 +1,18 @@
+{% extends 'contact_page/layout_normal.html'%}
+
+{% block rest%}
+<div id = 'individual_box'>
+    <form action="{% url 'contact_page:schedule'%}" method="get">
+        {% csrf_token %}
+        <input type="hidden" name = 'host_first_name' value = {{result.first_name}}>
+        <input type="hidden" name = 'host_last_name' value = {{result.last_name}}>
+        <input type='hidden' name = 'host_email' value = {{result.email}}>
+        <input type = 'submit' value = 'Schedule an appointment' id = 'meeting_button'>
+    </form>
+    <h1> {{result.first_name}} {{result.last_name}} </h1>
+    <h2> {{result.email}}</h2>
+    <h3> {{result.mailing_address.street_name}} {{result.mailing_address.house_number}}</h3>
+    <h3> {{result.mailing_address.city}} {{result.mailing_address.postal_code}}</h3>
+    <h3> {{result.mailing_address.country}}</h3>
+</div>
+{% endblock %}

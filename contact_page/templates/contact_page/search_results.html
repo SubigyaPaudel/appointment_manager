@@ -1,0 +1,84 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <title>
+            Contact_manager
+        </title>
+        <link rel="stylesheet" href="{%static 'contact_page/css/style.css'%}">
+    </head>
+    <body>
+       <div id="top_banner">
+                <a href="{%url 'contact_page:welcome'%}">
+                    <h1 id = 'title'>Appointment manager</h1>
+                </a>
+       </div>
+        <div id= 'things'>
+            <div id = 'search_results'> 
+            </div>
+        </div>
+    </body>
+    
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<script type = 'text/babel'>
+    class Searchresult extends React.Component{
+        constructor(props){
+            super(props);
+            this.first_name = props.first_name;
+            this.last_name = props.last_name;
+            this.email_address = props.email_address;
+            this.id = `'searchresult_${this.email_address}'`;
+            this.key = this.id;
+            this.further_button_id = `further_button_${this.email_address}`;
+            this.cancel_button_id = `cancel_button_${this.email_address}`;
+            console.log(`${this.first_name}, ${this.last_name}, ${this.email_address} created`);
+        }
+        render(){
+            return(
+               <div className = 'searchresult' id = {this.id}>
+                    <h2 className = 'center'>{this.first_name} {this.last_name}</h2>
+                    <p className = 'center'>{this.email_address}</p>
+                    <div className = 'search_result_button_section'>
+                        <button id = {this.further_button_id} onClick = {this.getfurtherinfo}>
+                            More
+                        </button>
+                        <button id = {this.cancel_button_id} onClick = {this.remove}>
+                            Not Interested
+                        </button>
+                    </div>
+               </div>
+            )
+        }
+        remove = (event) => {
+            const search_area = event.target.parentElement.parentElement;
+            search_area.addEventListener('animationend', (event) => event.target.remove());
+            search_area.style.animationPlayState = 'running';
+        }
+        getfurtherinfo = (event) => {
+            window.location = `/contact_page/search_results_further?email=${this.email_address}`;
+        }
+    }
+    class MultipleSearchResults extends React.Component{
+        constructor(props){
+            super(props);
+            this.elements = [];
+            for(var i in props.elements){
+                props.elements[i]['id'] = i;
+                this.elements.push(props.elements[i])
+            }    
+        }
+        render() {
+            return (
+                <div>
+                    {this.elements.map(element => <Searchresult key = {element.id} first_name = {element.first_name} last_name = {element.last_name} email_address = {element.email}/>)}
+                </div>
+            );
+        }
+    }
+    const Hosts = JSON.parse("{{hosts|escapejs}}");
+    console.log(Hosts);
+    ReactDOM.render(<MultipleSearchResults elements = {Hosts}/>, document.querySelector('#search_results'));
+</script> 
+</html>
