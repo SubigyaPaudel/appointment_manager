@@ -37,13 +37,22 @@ body{
     animation-fill-mode: forwards;
 }
 
+nav{
+    width: cover;
+}
+
+.ui-menu-item{
+    background-color: white;
+    width: fit-content;
+}
+
 body{
-    animation-name: body_fade_in;
-    animation-duration: 3s;
-    animation-fill-mode: forwards;
-    background-color: gray;
-    width: 1000px;
-    height: 800px;
+    background-image: url('../img/image.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: brightness(150%);
+    display: flexbox;
+    flex-wrap: wrap;
 }
 
 #top_banner {
@@ -67,16 +76,7 @@ body{
     padding: 25px;
     position: relative;
     left: 75px;
-    background-image: url('../img/image.jpg');
-    background-color: cover;
-    background-size: contain;
-    background-repeat: no-repeat;
-    filter: brightness(150%);
-    opacity: 0.6;
-    width: 150%;
-    height:750px;
-    display: flexbox;
-    flex-wrap: wrap;
+    
 }
 
 .sidelinks{
@@ -113,4 +113,8 @@ li{
 td{
     color: black;
     font-size: larger;
+}
+
+#schedule input{
+    margin: 10px;
 }

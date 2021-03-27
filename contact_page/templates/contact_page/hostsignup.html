@@ -4,7 +4,7 @@
 {% if message %}
     <h1 style = "color: red;">{{message}}</h1>
 {% endif %}
-<form class = 'center form' action="{%url 'contact_page:signup'%}" method = 'POST'>
+<form class = 'center form' id = "schedule" action="{%url 'contact_page:signup'%}" method = 'POST'>
     {% csrf_token %}
     <h2>Sign-in details and Personal information</h2>
     {% for fields in authform %}
@@ -26,6 +26,8 @@
     {{authform.errors}}
     {{newhostform.errors}}
     {{addressform.errors}}
-    <input type="submit" name = 'Sign Up'>
+    <button type = "submit" class = "btn btn-success" style = "margin:10px;">
+        Submit
+    </button>   
 </form>
 {% endblock rest %}

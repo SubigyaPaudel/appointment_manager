@@ -1,54 +1,38 @@
 {%extends 'contact_page/layout_normal.html'%}
+{% load static %}
 
 {% block rest %}
 <script src="//code.jquery.com/jquery-1.12.4.js"></script>
 <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script>
-    popnameform = () => {
-        document.querySelector('#emailform').style.display = 'none';
-        document.querySelector('#nameform').style.display = 'contents';
-    }
-    popemailform = () => {
-        document.querySelector('#nameform').style.display = 'none';
-        document.querySelector('#emailform').style.display = 'contents';
-    }
-    document.addEventListener('DOMContentLoaded', () => {
-        document.querySelector('#name_button').onclick = popnameform;
-        document.querySelector('#email_button').onclick = popemailform;
-        addautocomplete('#FirstName','Host', 'first_name');
-        addautocomplete('#LastName', 'Host' ,'last_name');
-        addautocomplete('#Email', 'Host', 'email');
-    });
-</script>
-
+<script src = "{% static "/contact_page/scripts/autocomplete.js"%}"></script>
 <div class = 'center form'>
-    <button id = 'email_button'>
-    Search by email
+    <button id = 'email_button' type = "button" class = "btn btn-primary" onclick = "popemailform">
+        Search by email
     </button>
-    <button id = 'name_button'>
+    <button id = 'name_button' type = "button" class = "btn btn-primary" onclick = "popnameform">
         Search by Name
     </button>
 </div>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
 <div class = 'center form'>
     <form action="{% url 'contact_page:search_results' %}" id = 'nameform' style = 'display: none;' method = POST>
         {% csrf_token %}
         <label for="FirstName">First Name</label>
-        <input type="text" name = 'FirstName' id = 'FirstName' placeholder="First Name"/>
+        <input type="text" name = 'FirstName' id = 'FirstName' placeholder="First Name" style = "margin:10px;"/>
         <label for="LastName">Last Name</label>
-        <input type="text" name = 'LastName' id = 'LastName' placeholder="Last Name"/>
+        <input type="text" name = 'LastName' id = 'LastName' placeholder="Last Name" style = "margin:10px;"/>
         <input type="hidden" name = 'searchtype' value = 'NameSearch'/>
-        <input type="submit"/>
+        <button type = "submit" class = "btn btn-success" style = "margin:10px;">
+            Submit
+        </button>   
     </form>
     <form action="{% url 'contact_page:search_results' %}" id = 'emailform' style = 'display: none;' method = POST>
         {% csrf_token %}
         <label for='Email'>Email address</label>
         <input type="text" name = 'Email' id = 'Email' placeholder="Email Address"/>
         <input type="hidden" name = 'searchtype' value = 'EmailSearch'/>
-        <input type="submit"/>
+        <button type = "submit" class = "btn btn-success" style = "margin:10px;">
+            Submit
+        </button>   
     </form>
 </div>
     

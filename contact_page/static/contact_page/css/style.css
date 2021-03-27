@@ -216,8 +216,7 @@ body{
 }
 
 .center{
-  position: relative;
-  left: 15%;
+  float: center;
 }
 
 #things label {

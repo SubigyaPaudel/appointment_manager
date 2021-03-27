@@ -19,4 +19,20 @@ function addautocomplete(identifier, tablename, columnname){
             });
         }
     };
-}   
+}
+
+function popnameform(){
+    document.querySelector('#emailform').style.display = 'none';
+    document.querySelector('#nameform').style.display = 'contents';
+}
+function popemailform(){
+    document.querySelector('#nameform').style.display = 'none';
+    document.querySelector('#emailform').style.display = 'contents';
+}
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('#name_button').onclick = popnameform;
+    document.querySelector('#email_button').onclick = popemailform;
+    addautocomplete('#FirstName','Host', 'first_name');
+    addautocomplete('#LastName', 'Host' ,'last_name');
+    addautocomplete('#Email', 'Host', 'email');
+});

@@ -4,7 +4,7 @@
 {% if message %}
     <h1 style = 'color:red;'>{{message}}</h1>
 {% endif %}
-<div id = 'individual_box'>
+<div id = 'schedule'>
 {% if form %}
     <form action = "{% url 'contact_page:followup'%}" method = 'POST' class = 'center form'>
         {% csrf_token %}
