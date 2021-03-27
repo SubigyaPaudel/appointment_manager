@@ -9,3 +9,5 @@ Some technical details of this application are as follows:
 3. Frontend : React/JavaScript
 
 Please feel free to contact me at spaudel.dev@gmail.com in the case that you find some bugs in the program. Suggestions are also welcome.
+
+Deployed at : https://appointment-manager-v1.herokuapp.com/contact_page/
