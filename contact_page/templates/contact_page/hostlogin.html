@@ -2,8 +2,9 @@
 
 {% block rest %}
 <div id = 'schedule'>
+    <h1 style = "color:green">Enter your sign-in credentials</h1>
     {% if message %}
-    <h1 style = 'color:red;'>{{message}}</h1>
+    <h2 style = 'color:red;'>{{message}}</h2>
     {% endif %}
     <form class = 'center form' action="{% url 'contact_page:hostLogin' redirected destination %}" method = 'POST'>
         {% csrf_token %}
@@ -12,7 +13,9 @@
             {{ field }}
             <br/>
         {% endfor %}
-        <input type="submit" name = 'Login'>
+        <button type = "submit" class = "btn btn-primary" style = "margin:10px;">
+            Sign in
+        </button>   
     </form>
 </div>
 {% endblock  %}
