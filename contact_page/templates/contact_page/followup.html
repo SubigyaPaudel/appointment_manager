@@ -119,8 +119,11 @@ class Modisplay extends React.Component {
     } 
     }
     const data = JSON.parse("{{meeting|escapejs}}");
-    console.log("data = " + data);
-    ReactDOM.render(<Modisplay elements = {data}/>, document.querySelector('#pseudoform'))
+    if(Object.keys(data).length !== 0){
+        ReactDOM.render(<Modisplay elements = {data}/>, document.querySelector('#pseudoform'))
+    }else{
+        ReactDOM.render(<h1>No such meeting found</h1>, document.querySelector('#pseudoform'))
+    }
     </script>
 {% endif %}
 {% endblock  %} 
