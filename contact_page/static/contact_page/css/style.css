@@ -21,6 +21,11 @@
   }
 }
 
+
+body{
+  overflow-x: hidden;
+}
+
 h1 {
   margin: 0;
   padding: 0;

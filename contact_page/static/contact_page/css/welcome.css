@@ -18,6 +18,11 @@
     }
 }
 
+
+body{
+    overflow-x: hidden;
+  }
+
 #button_area {
     position: relative;
     left : 80%;
