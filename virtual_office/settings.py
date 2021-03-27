@@ -27,7 +27,7 @@ SECRET_KEY = ')01#e94t021khbvg#nwhkk!&5aq!7udbyr)0lkcm(i%b7zvq_o'
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    ' appointment-manager-v1.herokuapp.com/',
+    'appointment-manager-v1.herokuapp.com',
     '127.0.0.1'
 ]
 
